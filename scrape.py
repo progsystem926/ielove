@@ -75,10 +75,11 @@ def extract_address_info(soup):
 
 def extract_contact_info(soup, info_type):
     try:
-        element = soup.find("th", string=info_type)
-        return (
-            element.find_parent("tr").find("td").get_text(strip=True) if element else ""
-        )
+        elements = soup.find_all("th", string=info_type)
+        for element in elements:
+            if element and element.next_sibling.name == "td":
+                return element.next_sibling.get_text(strip=True)
+        return "Not found"
     except AttributeError:
         print(f"{info_type} information not found")
         return ""
