@@ -42,11 +42,7 @@ def extract_company_name(soup):
     company_name_element = soup.find(id="dc_info_title") or soup.find(
         class_="company-header__name"
     )
-    return (
-        company_name_element.get_text(strip=True)
-        if company_name_element
-        else "Not found"
-    )
+    return company_name_element.get_text(strip=True) if company_name_element else ""
 
 
 def extract_address_info(soup):
@@ -79,7 +75,7 @@ def extract_contact_info(soup, info_type):
         for element in elements:
             if element and element.next_sibling.name == "td":
                 return element.next_sibling.get_text(strip=True)
-        return "Not found"
+        return ""
     except AttributeError:
         print(f"{info_type} information not found")
         return ""
